@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="探索自然常数e - 从银行利息到宇宙规律的数学冒险之旅" />
+    <meta name="keywords" content="数学,自然常数,欧拉常数,e,交互式学习,玩转数学" />
+    <meta name="author" content="Yu Guanghua" />
+    <title>玩转数学 - 探索自然常数e</title>
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- 手绘风格字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet" />
+    
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+    
+    <style>
+      /* 全局重置 */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+      }
+      
+      body {
+        font-family: 'Comic Sans MS', cursive, 'Ma Shan Zheng', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      /* 加载动画 */
+      #loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #fffbf5 0%, #fff5e6 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+      }
+      
+      #loading.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      
+      .loading-logo {
+        font-size: 6rem;
+        font-weight: bold;
+        color: #5470c6;
+        font-style: italic;
+        text-shadow: 3px 3px 0 #fac858;
+        animation: float 2s ease-in-out infinite;
+        margin-bottom: 2rem;
+      }
+      
+      .loading-text {
+        font-size: 1.5rem;
+        color: #666;
+        font-family: 'Ma Shan Zheng', cursive;
+        margin-bottom: 1rem;
+      }
+      
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid #e0e0e0;
+        border-top-color: #5470c6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 加载屏幕 -->
+    <div id="loading">
+      <div class="loading-logo">e</div>
+      <div class="loading-text">玩转数学 - 探索自然常数</div>
+      <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- Vue 应用挂载点 -->
+    <div id="app"></div>
+    
+    <script type="module" src="/src/main.ts"></script>
+    
+    <script>
+      // 加载完成后隐藏加载屏幕
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const loading = document.getElementById('loading');
+          if (loading) {
+            loading.classList.add('hidden');
+            setTimeout(() => {
+              loading.style.display = 'none';
+            }, 500);
+          }
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
