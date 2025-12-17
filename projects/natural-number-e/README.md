@@ -232,7 +232,7 @@ MIT License
 
 **Yu Guanghua**
 - Email: guanghua.yu@gmail.com
-- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
+- GitHub: [@yusnow](https://github.com/yusnow)
 
 ## 🙏 致谢
 

@@ -43,7 +43,7 @@
 ### 克隆项目
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/play-with-math.git
+git clone https://github.com/yusnow/play-with-math.git
 cd play-with-math
 ```
 
@@ -155,7 +155,7 @@ Copyright (c) 2025 Yu Guanghua
 
 - 作者: Yu Guanghua
 - 邮箱: guanghua.yu@gmail.com
-- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
+- GitHub: [@yusnow](https://github.com/yusnow)
 
 ## 🙏 致谢
 
