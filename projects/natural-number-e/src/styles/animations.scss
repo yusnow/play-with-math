@@ -1,0 +1,586 @@
+/**
+ * 动画效果
+ * Animations
+ */
+
+@import './variables.scss';
+
+// ============================================
+// 通用动画
+// ============================================
+
+// 淡入淡出
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+// 从下往上淡入
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 从上往下淡入
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 从左往右淡入
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// 从右往左淡入
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// 缩放淡入
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// ============================================
+// 浮动动画
+// ============================================
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+// 左右浮动
+@keyframes floatHorizontal {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+}
+
+// ============================================
+// 弹跳动画
+// ============================================
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// ============================================
+// 旋转动画
+// ============================================
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// 摆动
+@keyframes swing {
+  0%, 100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes sway {
+  0%, 100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+// ============================================
+// 脉冲动画
+// ============================================
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10%, 30% {
+    transform: scale(0.95);
+  }
+  20%, 40% {
+    transform: scale(1.1);
+  }
+}
+
+// ============================================
+// 抖动动画
+// ============================================
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes wobble {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+// ============================================
+// 闪烁动画
+// ============================================
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes flash {
+  0%, 50%, 100% {
+    opacity: 1;
+  }
+  25%, 75% {
+    opacity: 0;
+  }
+}
+
+// ============================================
+// 滑动动画
+// ============================================
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+// ============================================
+// 特殊效果动画
+// ============================================
+
+// 闪光效果
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+// 波纹效果
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+// 打字效果(光标)
+@keyframes blink-caret {
+  0%, 100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: currentColor;
+  }
+}
+
+// 进度条加载
+@keyframes progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// 呼吸灯效果
+@keyframes breathing {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+// ============================================
+// 工具类
+// ============================================
+
+// 动画速度类
+.animate-fast {
+  animation-duration: $transition-fast;
+}
+
+.animate-normal {
+  animation-duration: $transition-base;
+}
+
+.animate-slow {
+  animation-duration: $transition-slow;
+}
+
+// 动画延迟类
+.animate-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-2 {
+  animation-delay: 0.2s;
+}
+
+.animate-delay-3 {
+  animation-delay: 0.3s;
+}
+
+// 无限循环
+.animate-infinite {
+  animation-iteration-count: infinite;
+}
+
+// 动画填充模式
+.animate-forwards {
+  animation-fill-mode: forwards;
+}
+
+.animate-backwards {
+  animation-fill-mode: backwards;
+}
+
+.animate-both {
+  animation-fill-mode: both;
+}
+
+// ============================================
+// 预设动画组合类
+// ============================================
+
+.fade-in {
+  animation: fadeIn $transition-base $easing-ease-out;
+}
+
+.fade-in-up {
+  animation: fadeInUp $transition-base $easing-ease-out;
+}
+
+.fade-in-down {
+  animation: fadeInDown $transition-base $easing-ease-out;
+}
+
+.fade-in-left {
+  animation: fadeInLeft $transition-base $easing-ease-out;
+}
+
+.fade-in-right {
+  animation: fadeInRight $transition-base $easing-ease-out;
+}
+
+.bounce-in {
+  animation: bounceIn 0.6s $easing-ease-out;
+}
+
+.float-slow {
+  animation: floatSlow 3s $easing-ease-in-out infinite;
+}
+
+.float-fast {
+  animation: float 2s $easing-ease-in-out infinite;
+}
+
+.spin-slow {
+  animation: spinSlow 3s linear infinite;
+}
+
+.spin-fast {
+  animation: spin 1s linear infinite;
+}
+
+.pulse-gentle {
+  animation: pulse 2s $easing-ease-in-out infinite;
+}
+
+.shake-once {
+  animation: shake 0.5s $easing-ease-in-out;
+}
+
+.sway-gentle {
+  animation: sway 2s $easing-ease-in-out infinite;
+}
+
+// ============================================
+// 过渡效果
+// ============================================
+
+// 全局过渡
+.transition-all {
+  transition: all $transition-base $easing-ease-in-out;
+}
+
+.transition-colors {
+  transition: color $transition-base $easing-ease-in-out,
+              background-color $transition-base $easing-ease-in-out,
+              border-color $transition-base $easing-ease-in-out;
+}
+
+.transition-transform {
+  transition: transform $transition-base $easing-ease-in-out;
+}
+
+.transition-opacity {
+  transition: opacity $transition-base $easing-ease-in-out;
+}
+
+// 悬停效果
+.hover-lift {
+  transition: transform $transition-base $easing-ease-out;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.hover-scale {
+  transition: transform $transition-base $easing-ease-out;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.hover-rotate {
+  transition: transform $transition-base $easing-ease-out;
+  
+  &:hover {
+    transform: rotate(5deg);
+  }
+}
+
+.hover-shadow {
+  transition: box-shadow $transition-base $easing-ease-out;
+  
+  &:hover {
+    box-shadow: $shadow-lg;
+  }
+}
+
+// ============================================
+// 加载动画
+// ============================================
+
+.loading-spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid $border-light;
+  border-top-color: $color-primary;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-dots {
+  display: inline-flex;
+  gap: 8px;
+  
+  span {
+    width: 8px;
+    height: 8px;
+    background: $color-primary;
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+    
+    &:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+    
+    &:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+  }
+}
+
+// ============================================
+// 骨架屏动画
+// ============================================
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    $bg-gray-light 0px,
+    #f0f0f0 40px,
+    $bg-gray-light 80px
+  );
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
