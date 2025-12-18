@@ -3,7 +3,7 @@
  * Animations
  */
 
-@import './variables.scss';
+@use './variables.scss' as *;
 
 // ============================================
 // 通用动画

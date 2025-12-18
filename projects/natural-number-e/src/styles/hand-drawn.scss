@@ -3,7 +3,7 @@
  * Hand-Drawn Style
  */
 
-@import './variables.scss';
+@use './variables.scss' as *;
 
 // ============================================
 // 手绘风格基础类
