@@ -96,7 +96,7 @@
         
         <div class="value-controls">
           <el-button @click="showMoreDigits">显示更多位数</el-button>
-          <el-button @click="playDigits" :icon="Playing">朗读数字</el-button>
+          <el-button @click="playDigits" :icon="VideoPlay">朗读数字</el-button>
         </div>
         
         <div class="digits-display">
@@ -277,7 +277,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
-import { Playing } from '@element-plus/icons-vue'
+import { VideoPlay } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
