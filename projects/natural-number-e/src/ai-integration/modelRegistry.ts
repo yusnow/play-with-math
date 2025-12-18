@@ -463,3 +463,12 @@ export function getModelsByLocale(locale: 'zh-CN' | 'en-US' | 'all' = 'all'): AI
   if (locale === 'all') return getAllModels();
   return getAllModels().filter(model => model.locale === locale || !model.locale);
 }
+
+/**
+ * 向后兼容的导出别名
+ * MODEL_REGISTRY = AI_MODELS
+ */
+export const MODEL_REGISTRY = AI_MODELS;
+
+// 默认导出
+export default AI_MODELS;
