@@ -235,3 +235,94 @@ table {
   background-size: 400px 400px;
   background-repeat: repeat;
 }
+
+// ============================================
+// 21. 移动端全局优化
+// ============================================
+
+@media (max-width: $breakpoint-md) {
+  // 基础字体缩放
+  html {
+    font-size: 15px;
+  }
+  
+  // 容器适配
+  .container {
+    padding: 0 $spacing-md;
+  }
+  
+  .container-sm {
+    padding: 0 $spacing-md;
+  }
+  
+  // 卡片适配
+  .card {
+    padding: $spacing-md;
+    border-radius: $radius-md;
+  }
+  
+  // 按钮触摸优化
+  button,
+  .el-button {
+    min-height: 44px; // iOS 最小触摸目标
+    padding: 0.75rem 1.5rem;
+  }
+  
+  // 输入框优化
+  input,
+  textarea,
+  select {
+    font-size: 16px; // 防止 iOS 自动缩放
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  // 超小屏幕字体
+  html {
+    font-size: 14px;
+  }
+  
+  // 间距缩减
+  .container,
+  .container-sm {
+    padding: 0 $spacing-sm;
+  }
+  
+  // 标题缩放
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+  }
+}
+
+// 触摸设备优化
+@media (hover: none) and (pointer: coarse) {
+  // 增大交互元素
+  a,
+  button,
+  .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  // 禁用悬停效果（触摸设备无意义）
+  *:hover {
+    // 保持原样，不触发悬停动画
+  }
+}
+
+// 横屏优化
+@media (max-width: $breakpoint-md) and (orientation: landscape) {
+  // 减小垂直间距
+  section {
+    padding-top: $spacing-lg;
+    padding-bottom: $spacing-lg;
+  }
+}

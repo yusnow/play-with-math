@@ -659,4 +659,181 @@ function animateEDigits() {
     transform: translateY(-10px);
   }
 }
+
+// ============================================
+// 移动端适配
+// ============================================
+
+@media (max-width: 768px) {
+  .home-container {
+    padding: 0;
+  }
+  
+  // Hero 区域
+  .hero-section {
+    min-height: 50vh;
+    padding: 3rem 1rem 2rem;
+    
+    .hero-title {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .hero-description {
+      font-size: 0.95rem;
+      max-width: 100%;
+      padding: 0 1rem;
+    }
+    
+    .cta-buttons {
+      flex-direction: column;
+      gap: 0.75rem;
+      
+      :deep(.el-button) {
+        width: 100%;
+        max-width: 280px;
+        // 增大触摸目标
+        min-height: 48px;
+        font-size: 1rem;
+      }
+    }
+  }
+  
+  // 3D 可视化区域 - 移动端隐藏或降低高度
+  .visualization-section {
+    height: 250px;
+    
+    .three-container {
+      height: 250px;
+    }
+    
+    .visualization-hint {
+      font-size: 0.85rem;
+      padding: 0.5rem;
+    }
+  }
+  
+  // 章节网格
+  .chapters-section {
+    padding: 2rem 1rem;
+    
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .section-subtitle {
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+  }
+  
+  .chapters-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    
+    .chapter-card {
+      padding: 1.5rem;
+      
+      &:hover {
+        // 移动端禁用悬停旋转，避免视觉混乱
+        transform: translateY(-5px);
+      }
+      
+      .chapter-icon {
+        font-size: 2.5rem;
+      }
+      
+      .chapter-title {
+        font-size: 1.2rem;
+      }
+      
+      .chapter-description {
+        font-size: 0.9rem;
+      }
+      
+      .chapter-progress {
+        margin-top: 1rem;
+      }
+    }
+  }
+  
+  // 功能特点区域
+  .features-section {
+    padding: 2rem 1rem;
+    
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      
+      .feature-card {
+        padding: 1.5rem;
+        
+        .feature-icon {
+          font-size: 2.5rem;
+        }
+        
+        .feature-title {
+          font-size: 1.1rem;
+        }
+        
+        .feature-description {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+  
+  // 统计数据区域
+  .stats-section {
+    padding: 2rem 1rem;
+    
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      
+      .stat-card {
+        padding: 1.5rem 1rem;
+        
+        .stat-number {
+          font-size: 2rem;
+        }
+        
+        .stat-label {
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+}
+
+// 超小屏幕（iPhone SE 等）
+@media (max-width: 375px) {
+  .hero-section {
+    .hero-title {
+      font-size: 1.75rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 0.95rem;
+    }
+  }
+  
+  .chapters-grid .chapter-card {
+    padding: 1.25rem;
+    
+    .chapter-icon {
+      font-size: 2rem;
+    }
+  }
+  
+  .stats-section .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

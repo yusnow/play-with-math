@@ -847,4 +847,130 @@ function clearHistory() {
     transform: translateY(-10px);
   }
 }
+
+// ============================================
+// 移动端适配
+// ============================================
+
+@media (max-width: 768px) {
+  .ai-chat-panel {
+    // 全屏显示
+    right: -100vw;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    max-width: 100%;
+    border-radius: 0;
+    
+    &.visible {
+      right: 0;
+    }
+  }
+  
+  .panel-header {
+    padding: 1rem;
+    border-radius: 0;
+    
+    .header-title {
+      font-size: 1rem;
+    }
+  }
+  
+  .messages-container {
+    padding: 0.75rem;
+    
+    .empty-state {
+      padding: 2rem 1rem;
+      
+      .empty-icon {
+        font-size: 3rem;
+      }
+      
+      .quick-questions {
+        max-width: 100%;
+        
+        .quick-question-btn {
+          padding: 1rem;
+          font-size: 0.95rem;
+          // 增大触摸目标
+          min-height: 48px;
+        }
+      }
+    }
+    
+    .message-item {
+      .message-content {
+        max-width: 80%;
+        
+        .message-text {
+          font-size: 0.95rem;
+        }
+      }
+    }
+  }
+  
+  .input-container {
+    padding: 0.75rem;
+    
+    :deep(.el-textarea__inner) {
+      // 防止 iOS 自动缩放
+      font-size: 16px;
+    }
+    
+    .input-actions {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.5rem;
+      
+      .input-hint {
+        text-align: center;
+      }
+      
+      :deep(.el-button) {
+        width: 100%;
+        // 增大触摸目标
+        min-height: 44px;
+      }
+    }
+  }
+}
+
+// 设置对话框移动端适配
+:deep(.el-dialog) {
+  @media (max-width: 768px) {
+    width: 95vw !important;
+    max-width: 95vw;
+    margin: 5vh auto;
+    max-height: 90vh;
+    
+    .el-dialog__body {
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    
+    .models-grid {
+      grid-template-columns: 1fr !important;
+      
+      .model-card {
+        // 增大触摸目标
+        min-height: 80px;
+      }
+    }
+    
+    .el-form-item {
+      margin-bottom: 1rem;
+    }
+    
+    .el-input,
+    .el-input-number {
+      width: 100%;
+      
+      input {
+        // 防止 iOS 自动缩放
+        font-size: 16px;
+      }
+    }
+  }
+}
 </style>

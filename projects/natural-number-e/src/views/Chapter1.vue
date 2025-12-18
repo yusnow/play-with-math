@@ -959,4 +959,268 @@ function showConceptDetail(concept: string) {
   bottom: 2rem;
   z-index: 100;
 }
+
+// ============================================
+// 移动端适配
+// ============================================
+
+@media (max-width: 768px) {
+  .chapter1 {
+    padding: 0;
+  }
+  
+  // 页面头部
+  .chapter-header {
+    padding: 2rem 1rem 1.5rem;
+    
+    .chapter-title {
+      font-size: 2rem;
+    }
+    
+    .chapter-subtitle {
+      font-size: 0.95rem;
+    }
+  }
+  
+  // 吉祥物位置调整
+  .chapter-mascot {
+    right: 1rem;
+    bottom: 5rem; // 避免遮挡内容
+    transform: scale(0.85);
+  }
+  
+  // 故事区域
+  .story-section {
+    padding: 2rem 1rem;
+    
+    .section-title {
+      font-size: 1.5rem;
+    }
+    
+    .story-card {
+      padding: 1.25rem;
+      
+      .story-text {
+        font-size: 0.95rem;
+      }
+      
+      .quote-box {
+        padding: 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  }
+  
+  // 交互式区域
+  .interactive-box {
+    padding: 1.5rem 1rem;
+    
+    .interactive-title {
+      font-size: 1.2rem;
+    }
+    
+    .controls-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      
+      .control-item {
+        label {
+          font-size: 0.95rem;
+        }
+        
+        // 滑块触摸优化
+        :deep(.el-slider) {
+          margin: 1rem 0;
+          
+          .el-slider__runway {
+            height: 8px;
+          }
+          
+          .el-slider__button {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+    
+    // 公式区域
+    .formula-display {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      
+      .formula-box {
+        padding: 1rem;
+        
+        .formula {
+          font-size: 1.2rem;
+        }
+        
+        .formula-values {
+          font-size: 1rem;
+        }
+      }
+      
+      .result-card {
+        padding: 1rem;
+        
+        .result-label {
+          font-size: 0.9rem;
+        }
+        
+        .result-value {
+          font-size: 1.8rem;
+        }
+      }
+    }
+    
+    // 图表容器
+    .chart-wrapper {
+      margin-top: 1.5rem;
+      
+      .chart-container {
+        height: 280px;
+      }
+    }
+  }
+  
+  // 时间线区域
+  .timeline-section {
+    padding: 2rem 1rem;
+    
+    .timeline {
+      padding-left: 1.5rem;
+      
+      .timeline-item {
+        padding-left: 2rem;
+        padding-bottom: 2rem;
+        
+        &::before {
+          left: -1.5rem;
+        }
+        
+        .timeline-dot {
+          left: -2rem;
+          width: 16px;
+          height: 16px;
+        }
+        
+        .timeline-card {
+          padding: 1rem;
+          
+          .timeline-year {
+            font-size: 1.1rem;
+          }
+          
+          .timeline-person {
+            font-size: 1rem;
+          }
+          
+          .timeline-description {
+            font-size: 0.9rem;
+          }
+          
+          // 数学公式移动端优化
+          .timeline-formula {
+            overflow-x: auto;
+            padding: 0.75rem;
+            
+            :deep(.katex) {
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // 命名理论区域
+  .naming-section {
+    padding: 2rem 1rem;
+    
+    .theories-container {
+      .theory-selector {
+        flex-direction: column;
+        gap: 0.75rem;
+        
+        .theory-btn {
+          width: 100%;
+          padding: 1rem;
+          
+          .theory-icon {
+            font-size: 1.5rem;
+          }
+          
+          .theory-title {
+            font-size: 0.95rem;
+          }
+        }
+      }
+      
+      .theory-details {
+        padding: 1.25rem;
+        margin-top: 1rem;
+        
+        .theory-description {
+          font-size: 1rem;
+        }
+        
+        .theory-content {
+          font-size: 0.9rem;
+        }
+        
+        .probability-bar {
+          margin-top: 1rem;
+        }
+      }
+    }
+  }
+  
+  // 相关概念区域
+  .concepts-section {
+    padding: 2rem 1rem;
+    
+    .concepts-title {
+      font-size: 1.2rem;
+    }
+    
+    .concept-tags {
+      gap: 0.5rem;
+      
+      :deep(.el-tag) {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+        // 增大触摸目标
+        min-height: 36px;
+      }
+    }
+  }
+}
+
+// 超小屏幕适配
+@media (max-width: 375px) {
+  .chapter-header .chapter-title {
+    font-size: 1.75rem;
+  }
+  
+  .interactive-box {
+    padding: 1rem 0.75rem;
+    
+    .chart-wrapper .chart-container {
+      height: 240px;
+    }
+  }
+  
+  .timeline-section .timeline {
+    padding-left: 1rem;
+    
+    .timeline-item {
+      padding-left: 1.5rem;
+      
+      .timeline-card {
+        padding: 0.75rem;
+      }
+    }
+  }
+}
 </style>
