@@ -580,7 +580,8 @@ function updateDerivativeChart() {
   let titleText = ''
   switch (selectedFunction.value) {
     case 'ex':
-      titleText = '函数曲线: e\u1d6a'  break
+      titleText = '函数曲线: e\u1d6a'
+      break
     case 'x2':
       titleText = '函数曲线: x\u00b2'
       break
