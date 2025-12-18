@@ -113,9 +113,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { Position, Operation, Clock } from '@element-plus/icons-vue'
 import * as THREE from 'three'
 import MascotCat from '@/components/common/MascotCat.vue'
+
+// 路由
+const router = useRouter()
 
 // 章节数据
 const chapters = [
