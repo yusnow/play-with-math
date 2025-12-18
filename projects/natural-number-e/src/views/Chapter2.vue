@@ -28,6 +28,16 @@
         <h3 class="interactive-title">📊 数字的家族树</h3>
         
         <div class="tree-container">
+          <!-- SVG 连线 -->
+          <svg class="tree-lines" xmlns="http://www.w3.org/2000/svg">
+            <!-- 第一层到第二层 -->
+            <line class="line-to-rational" stroke="#5470c6" stroke-width="3" stroke-dasharray="5,5" />
+            <line class="line-to-irrational" stroke="#5470c6" stroke-width="3" stroke-dasharray="5,5" />
+            
+            <!-- 第二层到第三层（无理数分支） -->
+            <line class="line-to-algebraic" stroke="#91cc75" stroke-width="3" stroke-dasharray="5,5" />
+            <line class="line-to-transcendental" stroke="#fac858" stroke-width="4" />
+          </svg>
           <div class="tree-level level-1">
             <div class="tree-node all-numbers">
               <div class="node-icon">🌳</div>
@@ -304,6 +314,76 @@ function playDigits() {
 // 数字分类
 const selectedType = ref('transcendental')
 
+// 关系详情对话框
+const showRelationDialog = ref(false)
+const currentRelation = ref({
+  title: '',
+  formula: '',
+  explanation: '',
+  applications: [] as string[],
+  funFact: ''
+})
+
+const relationDetails = {
+  euler: {
+    title: '欧拉恒等式：e与π的关系',
+    formula: 'e^{i\\pi} + 1 = 0',
+    explanation: '欧拉恒等式被誉为“数学中最美丽的公式”，它将数学中五个最重要的常数联系在一起：<br><strong>e</strong>（自然常数）、<strong>π</strong>（圆周率）、<strong>i</strong>（虚数单位）、<strong>1</strong>（乘法单位）、<strong>0</strong>（加法单位）。<br><br>这个等式通过复数指数函数建立，表明了指数函数、三角函数和复数之间的深刻联系。',
+    applications: [
+      '信号处理：用于傅里叶变换，分解信号为不同频率的正弦波',
+      '量子力学：描述波函数的相位关系',
+      '电子工程：交流电路分析中的复数表示',
+      '图像处理：二维傅里叶变换用于图像压缩和特征提取'
+    ],
+    funFact: '当将 e^ⁱᵖ 在复平面上表示时，它刚好是一个在单位圆上的点，角度为 π 弧度（180°），所以等于 -1，因此 e^ⁱᵖ + 1 = 0。'
+  },
+  logarithm: {
+    title: 'e与自然对数',
+    formula: '\\ln(e) = 1, \\quad e^{\\ln(x)} = x, \\quad \\ln(ab) = \\ln(a) + \\ln(b)',
+    explanation: '<strong>自然对数</strong>（Natural Logarithm）以 e 为底，记作 ln(x)。它是数学中最重要的对数函数，因为它具有最简单的导数：<br><br><strong>d(ln x)/dx = 1/x</strong><br><br>这使得自然对数在微积分中极为方便。所有其他底数的对数都可以通过自然对数转换：logₐ(x) = ln(x) / ln(a)。',
+    applications: [
+      '复利计算：计算投资翻倍所需时间',
+      '信息理论：衡量信息量和熵（通常使用 ln 或 log₂）',
+      '统计学：将指数分布转换为线性关系',
+      '物理学：描述放射性衰变、声音强度（分贝）等'
+    ],
+    funFact: 'ln 这个符号来自拉丁文 "logarithmus naturalis"，意为“自然对数”。在计算器发明之前，数学家使用对数表来简化复杂的乘法计算！'
+  },
+  growth: {
+    title: 'e与连续复利增长',
+    formula: 'A = P \\cdot e^{rt}, \\quad \\lim_{n \\to \\infty} \\left(1 + \\frac{r}{n}\\right)^{nt} = e^{rt}',
+    explanation: '当计息频率趋于无穷大时，复利公式的极限就是 <strong>连续复利公式</strong>：<br><br><strong>A = P · eᵣᵗ</strong><br><br>其中：<br>P = 本金<br>r = 年利率<br>t = 时间（年）<br>A = 最终金额<br><br>这个公式不仅用于金融，还描述了所有<strong>指数增长</strong>过程：人口增长、细菌繁殖、放射性衰变等。',
+    applications: [
+      '银行存款：计算连续复利的投资回报',
+      '人口统计：预测人口指数增长趋势',
+      '生物学：模拟细菌繁殖、疫情传播',
+      '物理化学：放射性衰变、化学反应速率',
+      '经济学：GDP增长、通货膨胀率计算'
+    ],
+    funFact: '如果你在公元元1年存入1元，年利率100%连续复利，到今天你将拥有 e²⁰²⁴ 元（大约 10⁸⁷⁸ 元）——超过了全球GDP总和！'
+  },
+  series: {
+    title: 'e的级数表示',
+    formula: 'e = \\sum_{n=0}^{\\infty} \\frac{1}{n!} = 1 + 1 + \\frac{1}{2!} + \\frac{1}{3!} + \\frac{1}{4!} + \\cdots',
+    explanation: 'e 可以用<strong>泰勒级数</strong>表示，这是一个美丽的无穷级数：<br><br><strong>e = ∑ (1/n!)</strong><br><br>这个级数收敛非常快，只需要前10项就可以得到 e 的前7位小数。<br><br>除此之外，e 还有其他级数表示，如：<br>e = lim(1 + 1/n)ⁿ<br>e = 2 + 1/(1 + 1/(2 + 2/(3 + 3/4...)))（连分数）',
+    applications: [
+      '数值计算：快速计算 e 的近似值',
+      '概率论：注松分布的推导',
+      '组合数学：错排问题的渐近解',
+      '复分析：整函数的级数展开',
+      '物理学：量子力学中的撑乱理论'
+    ],
+    funFact: 'e 的级数收敛速度之快，仅用前20项就能精确到小数点15位！相比之下，π 的级数收敛得慢得多。'
+  }
+}
+
+function showRelationDetail(type: keyof typeof relationDetails) {
+  currentRelation.value = relationDetails[type]
+  showRelationDialog.value = true
+  mascotEmotion.value = 'excited'
+  mascotMessage.value = '这个关系很重要哦！仔细看看！'
+}
+
 const typeInfo = {
   rational: {
     title: '有理数',
@@ -472,38 +552,57 @@ function updateDerivativeChart() {
   if (!derivativeChartInstance) return
   
   const xData = []
-  const yData: {[key: string]: number[]} = {}
+  const series = []
   
+  // 生成 x 轴数据
   for (let x = -2; x <= 2; x += 0.1) {
     xData.push(x.toFixed(1))
-    
-    if (!yData[selectedFunction.value]) {
-      yData[selectedFunction.value] = []
-    }
-    
-    switch (selectedFunction.value) {
-      case 'ex':
-        yData[selectedFunction.value].push(Math.exp(x))
-        break
-      case 'x2':
-        yData[selectedFunction.value].push(x * x)
-        break
-      case 'sin':
-        yData[selectedFunction.value].push(Math.sin(x))
-        break
-      case '2x':
-        yData[selectedFunction.value].push(Math.pow(2, x))
-        break
-    }
+  }
+  
+  // 计算原函数和各阶导数
+  const derivatives = calculateDerivatives()
+  
+  // 生成系列数据
+  derivatives.forEach((deriv, index) => {
+    series.push({
+      name: deriv.name,
+      type: 'line',
+      data: deriv.data,
+      smooth: true,
+      lineStyle: {
+        width: index === 0 ? 3 : 2,
+        type: index === 0 ? 'solid' : 'dashed'
+      }
+    })
+  })
+  
+  // 获取函数标题
+  let titleText = ''
+  switch (selectedFunction.value) {
+    case 'ex':
+      titleText = '函数曲线: e\u1d6a'  break
+    case 'x2':
+      titleText = '函数曲线: x\u00b2'
+      break
+    case 'sin':
+      titleText = '函数曲线: sin(x)'
+      break
+    case '2x':
+      titleText = '函数曲线: 2\u1d6a'
+      break
   }
   
   const option = {
     title: {
-      text: `函数曲线: ${selectedFunction.value}`,
+      text: titleText,
       left: 'center'
     },
     tooltip: {
       trigger: 'axis'
+    },
+    legend: {
+      data: derivatives.map(d => d.name),
+      top: 30
     },
     xAxis: {
       type: 'category',
@@ -512,17 +611,98 @@ function updateDerivativeChart() {
     yAxis: {
       type: 'value'
     },
-    series: [
-      {
-        name: selectedFunction.value,
-        type: 'line',
-        data: yData[selectedFunction.value],
-        smooth: true
-      }
-    ]
+    series: series
   }
   
   derivativeChartInstance.setOption(option)
+}
+
+// 计算各阶导数
+function calculateDerivatives() {
+  const result = []
+  const xValues = []
+  
+  for (let x = -2; x <= 2; x += 0.1) {
+    xValues.push(x)
+  }
+  
+  switch (selectedFunction.value) {
+    case 'ex':
+      result.push({
+        name: '原函数 f(x)=e\u1d6a',
+        data: xValues.map(x => Math.exp(x))
+      })
+      result.push({
+        name: "f'(x)=e\u1d6a",
+        data: xValues.map(x => Math.exp(x))
+      })
+      result.push({
+        name: "f''(x)=e\u1d6a",
+        data: xValues.map(x => Math.exp(x))
+      })
+      result.push({
+        name: "f'''(x)=e\u1d6a",
+        data: xValues.map(x => Math.exp(x))
+      })
+      break
+    case 'x2':
+      result.push({
+        name: '原函数 f(x)=x\u00b2',
+        data: xValues.map(x => x * x)
+      })
+      result.push({
+        name: "f'(x)=2x",
+        data: xValues.map(x => 2 * x)
+      })
+      result.push({
+        name: "f''(x)=2",
+        data: xValues.map(x => 2)
+      })
+      result.push({
+        name: "f'''(x)=0",
+        data: xValues.map(x => 0)
+      })
+      break
+    case 'sin':
+      result.push({
+        name: '原函数 f(x)=sin(x)',
+        data: xValues.map(x => Math.sin(x))
+      })
+      result.push({
+        name: "f'(x)=cos(x)",
+        data: xValues.map(x => Math.cos(x))
+      })
+      result.push({
+        name: "f''(x)=-sin(x)",
+        data: xValues.map(x => -Math.sin(x))
+      })
+      result.push({
+        name: "f'''(x)=-cos(x)",
+        data: xValues.map(x => -Math.cos(x))
+      })
+      break
+    case '2x':
+      const ln2 = Math.log(2)
+      result.push({
+        name: '原函数 f(x)=2\u1d6a',
+        data: xValues.map(x => Math.pow(2, x))
+      })
+      result.push({
+        name: "f'(x)=2\u1d6a·ln(2)",
+        data: xValues.map(x => Math.pow(2, x) * ln2)
+      })
+      result.push({
+        name: "f''(x)=2\u1d6a·(ln2)\u00b2",
+        data: xValues.map(x => Math.pow(2, x) * ln2 * ln2)
+      })
+      result.push({
+        name: "f'''(x)=2\u1d6a·(ln2)\u00b3",
+        data: xValues.map(x => Math.pow(2, x) * ln2 * ln2 * ln2)
+      })
+      break
+  }
+  
+  return result
 }
 
 watch(selectedFunction, () => {
@@ -559,12 +739,54 @@ watch(taylorTerms, () => {
   margin: 2rem 0;
   
   .tree-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 2rem;
     padding: 2rem;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     border-radius: 20px;
+    
+    // SVG 连线
+    .tree-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      
+      line {
+        &.line-to-rational {
+          x1: 50%;
+          y1: 15%;
+          x2: 30%;
+          y2: 35%;
+        }
+        
+        &.line-to-irrational {
+          x1: 50%;
+          y1: 15%;
+          x2: 70%;
+          y2: 35%;
+        }
+        
+        &.line-to-algebraic {
+          x1: 70%;
+          y1: 45%;
+          x2: 55%;
+          y2: 75%;
+        }
+        
+        &.line-to-transcendental {
+          x1: 70%;
+          y1: 45%;
+          x2: 85%;
+          y2: 75%;
+        }
+      }
+    }
     
     .tree-level {
       display: flex;
@@ -888,10 +1110,28 @@ watch(taylorTerms, () => {
     border: 3px solid $color-primary;
     text-align: center;
     transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
     
     &:hover {
       transform: translateY(-10px);
       box-shadow: 0 10px 30px rgba($color-primary, 0.3);
+      border-color: $color-accent;
+      
+      .click-hint {
+        opacity: 1;
+      }
+    }
+    
+    .click-hint {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      font-size: 0.85rem;
+      color: $color-accent;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-weight: bold;
     }
     
     .relation-icon {
@@ -977,6 +1217,57 @@ watch(taylorTerms, () => {
       
       &:hover {
         transform: scale(1.1);
+      }
+    }
+  }
+}
+
+// 关系详情对话框
+.relation-detail {
+  .detail-formula {
+    text-align: center;
+    padding: 2rem;
+    background: lighten($color-primary, 45%);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    font-size: 1.3rem;
+  }
+  
+  .detail-content {
+    h4 {
+      font-size: 1.2rem;
+      color: $color-primary;
+      margin: 1.5rem 0 1rem;
+      
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+    
+    p {
+      line-height: 1.8;
+      color: $text-primary;
+      margin-bottom: 1rem;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+      
+      li {
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        background: lighten($color-secondary, 40%);
+        border-left: 4px solid $color-secondary;
+        border-radius: 4px;
+        line-height: 1.6;
+        
+        &:before {
+          content: '•';
+          color: $color-secondary;
+          font-weight: bold;
+          margin-right: 0.5rem;
+        }
       }
     }
   }
