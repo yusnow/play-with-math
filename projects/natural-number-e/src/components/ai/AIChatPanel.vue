@@ -313,7 +313,12 @@ const internationalModels = computed(() => {
 })
 
 const domesticModels = computed(() => {
-  return MODEL_REGISTRY.domestic.map(model => ({
+  // 合并国产模型和 DeepSeek 模型
+  const allDomestic = [
+    ...MODEL_REGISTRY.domestic,
+    ...MODEL_REGISTRY.deepseek
+  ]
+  return allDomestic.map(model => ({
     id: model.id,
     name: model.name,
     provider: model.provider,
@@ -511,12 +516,27 @@ async function callAI(userInput: string): Promise<string> {
 
 // 获取模型配置
 function getModelConfig(modelId: string) {
-  const allModels = [...MODEL_REGISTRY.international, ...MODEL_REGISTRY.domestic]
+  const allModels = [
+    ...MODEL_REGISTRY.international,
+    ...MODEL_REGISTRY.domestic,
+    ...MODEL_REGISTRY.deepseek
+  ]
   return allModels.find(m => m.id === modelId)
 }
 
 // 发送快速问题
 function sendQuickQuestion(question: string) {
+  // 检查是否已配置模型和 API Key
+  if (!currentModel.value) {
+    ElMessage.warning('请先在设置中选择AI模型')
+    showSettings.value = true
+    return
+  }
+  if (!apiKey.value && !isCustomModel.value) {
+    ElMessage.warning('请先在设置中配置API Key')
+    showSettings.value = true
+    return
+  }
   inputText.value = question
   sendMessage()
 }

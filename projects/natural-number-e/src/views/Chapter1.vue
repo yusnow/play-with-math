@@ -124,7 +124,7 @@
             <div class="timeline-person">{{ event.person }}</div>
             <div class="timeline-description">{{ event.description }}</div>
             
-            <div v-if="event.formula" class="timeline-formula" v-html="event.formula"></div>
+            <div v-if="event.formula" class="timeline-formula" v-html="renderFormula(event.formula)"></div>
             
             <div v-if="activeEvent === index" class="timeline-details">
               <p>{{ event.details }}</p>
@@ -194,6 +194,8 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { StarFilled } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
+import katex from 'katex'
+import 'katex/dist/katex.min.css'
 import MascotCat from '@/components/common/MascotCat.vue'
 
 // 交互式参数
@@ -312,6 +314,19 @@ const historyEvents = [
 ]
 
 const activeEvent = ref(3) // 默认展开欧拉的条目
+
+// 渲染数学公式
+function renderFormula(latex: string): string {
+  try {
+    return katex.renderToString(latex, {
+      displayMode: true,
+      throwOnError: false
+    })
+  } catch (e) {
+    console.error('KaTeX 渲染错误:', e)
+    return latex
+  }
+}
 
 // e命名的理论
 const namingTheories = [
