@@ -55,7 +55,7 @@
         :class="`message-${message.role}`"
       >
         <div class="message-avatar">
-          <el-icon v-if="message.role === 'assistant'"><Robot /></el-icon>
+          <el-icon v-if="message.role === 'assistant'"><Service /></el-icon>
           <el-icon v-else><User /></el-icon>
         </div>
         
@@ -67,7 +67,7 @@
       
       <div v-if="isLoading" class="message-item message-assistant">
         <div class="message-avatar">
-          <el-icon><Robot /></el-icon>
+          <el-icon><Service /></el-icon>
         </div>
         <div class="message-content">
           <div class="typing-indicator">
@@ -252,7 +252,7 @@
 
 <script setup lang="ts">
 import { ref, computed, nextTick, onMounted } from 'vue'
-import { Promotion, Setting, Close, Robot, User } from '@element-plus/icons-vue'
+import { Promotion, Setting, Close, Service, User } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { marked } from 'marked'
 import CryptoJS from 'crypto-js'
