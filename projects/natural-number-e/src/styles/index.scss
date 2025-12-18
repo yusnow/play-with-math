@@ -1,0 +1,237 @@
+/**
+ * 全局样式入口文件
+ * Global Styles Entry
+ */
+
+// 1. 变量和配置 (必须最先导入)
+@use './variables.scss' as *;
+
+// 2. 手绘风格样式
+@use './hand-drawn.scss';
+
+// 3. 动画效果
+@use './animations.scss';
+
+// 4. 全局基础样式
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-normal;
+  color: $text-primary;
+  background: $bg-light;
+  overflow-x: hidden;
+}
+
+// 5. 滚动条样式
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-gray-light;
+  border-radius: $radius-sm;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $color-primary;
+  border-radius: $radius-sm;
+  
+  &:hover {
+    background: $color-primary-dark;
+  }
+}
+
+// 6. 选中文本样式
+::selection {
+  background: $color-accent;
+  color: $text-primary;
+}
+
+::-moz-selection {
+  background: $color-accent;
+  color: $text-primary;
+}
+
+// 7. 链接默认样式
+a {
+  color: $color-primary;
+  text-decoration: none;
+  transition: color $transition-base;
+  
+  &:hover {
+    color: $color-primary-dark;
+  }
+}
+
+// 8. 按钮默认样式重置
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+// 9. 输入框默认样式
+input,
+textarea {
+  font-family: inherit;
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+// 10. 图片默认样式
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// 11. 列表默认样式
+ul,
+ol {
+  list-style: none;
+}
+
+// 12. 表格默认样式
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+// 13. 响应式工具类
+@media (max-width: $breakpoint-sm) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: $breakpoint-sm) {
+  .show-mobile {
+    display: none !important;
+  }
+}
+
+// 14. 文本工具类
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-primary {
+  color: $color-primary;
+}
+
+.text-secondary {
+  color: $color-secondary;
+}
+
+.text-accent {
+  color: $color-accent;
+}
+
+.text-danger {
+  color: $color-danger;
+}
+
+// 15. 间距工具类
+.mt-sm { margin-top: $spacing-sm; }
+.mt-md { margin-top: $spacing-md; }
+.mt-lg { margin-top: $spacing-lg; }
+.mt-xl { margin-top: $spacing-xl; }
+
+.mb-sm { margin-bottom: $spacing-sm; }
+.mb-md { margin-bottom: $spacing-md; }
+.mb-lg { margin-bottom: $spacing-lg; }
+.mb-xl { margin-bottom: $spacing-xl; }
+
+.pt-sm { padding-top: $spacing-sm; }
+.pt-md { padding-top: $spacing-md; }
+.pt-lg { padding-top: $spacing-lg; }
+.pt-xl { padding-top: $spacing-xl; }
+
+.pb-sm { padding-bottom: $spacing-sm; }
+.pb-md { padding-bottom: $spacing-md; }
+.pb-lg { padding-bottom: $spacing-lg; }
+.pb-xl { padding-bottom: $spacing-xl; }
+
+// 16. 显示工具类
+.d-none { display: none; }
+.d-block { display: block; }
+.d-inline { display: inline; }
+.d-inline-block { display: inline-block; }
+.d-flex { display: flex; }
+.d-grid { display: grid; }
+
+// 17. Flex工具类
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// 18. 容器类
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 $spacing-lg;
+}
+
+.container-sm {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 $spacing-lg;
+}
+
+// 19. 卡片基础样式
+.card {
+  background: $bg-white;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-md;
+}
+
+// 20. 手绘风格全局应用
+#app {
+  // 纸张质感背景
+  background-image: $texture-paper;
+  background-size: 400px 400px;
+  background-repeat: repeat;
+}

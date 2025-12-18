@@ -12,10 +12,8 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import App from './App.vue';
 import router from './router';
 
-// 全局样式
-import './styles/variables.scss';
-import './styles/hand-drawn.scss';
-import './styles/animations.scss';
+// 全局样式 - 统一入口
+import './styles/index.scss';
 
 // 创建应用实例
 const app = createApp(App);
