@@ -1,62 +1,1021 @@
 <template>
-  <div class="chapter">
+  <div class="chapter-container chapter2">
+    <!-- 页面头部 -->
     <div class="chapter-header">
-      <router-link to="/" class="back-btn">← 返回首页</router-link>
-      <h1>第${i}章</h1>
-      <p class="dev-notice">🚧 正在开发中...</p>
+      <h1 class="chapter-title handwritten">第二章：e的数学地位</h1>
+      <p class="chapter-subtitle">超越数、无理数与微积分之美</p>
     </div>
-    <div class="chapter-content">
-      <p>精彩内容即将呈现！</p>
-    </div>
+
+    <!-- 吉祥物引导 -->
+    <MascotCat 
+      :emotion="mascotEmotion"
+      :message="mascotMessage"
+      class="chapter-mascot"
+    />
+
+    <!-- Section 1: e是什么数？ -->
+    <section class="story-section" id="number-types">
+      <h2 class="section-title">🔢 e是什么样的数？</h2>
+      
+      <div class="story-card">
+        <p class="story-text">
+          在数学的世界里，数字有不同的"身份"。e 拥有非常特殊的身份——它是一个<strong>超越数</strong>！
+        </p>
+      </div>
+
+      <!-- 数字分类可视化 -->
+      <div class="number-classification">
+        <h3 class="interactive-title">📊 数字的家族树</h3>
+        
+        <div class="tree-container">
+          <div class="tree-level level-1">
+            <div class="tree-node all-numbers">
+              <div class="node-icon">🌳</div>
+              <div class="node-title">所有数</div>
+              <div class="node-description">包括能想象到的所有数字</div>
+            </div>
+          </div>
+
+          <div class="tree-level level-2">
+            <div class="tree-node rational" @click="selectType('rational')">
+              <div class="node-icon">✅</div>
+              <div class="node-title">有理数</div>
+              <div class="node-description">可以写成分数</div>
+              <div class="node-examples">如: 1/2, 3, 0.25</div>
+            </div>
+            
+            <div class="tree-node irrational active" @click="selectType('irrational')">
+              <div class="node-icon">🌟</div>
+              <div class="node-title">无理数</div>
+              <div class="node-description">不能写成分数</div>
+              <div class="node-examples">如: √2, π, e</div>
+            </div>
+          </div>
+
+          <div class="tree-level level-3">
+            <div class="tree-node algebraic" @click="selectType('algebraic')">
+              <div class="node-icon">🧮</div>
+              <div class="node-title">代数数</div>
+              <div class="node-description">多项式方程的解</div>
+              <div class="node-examples">如: √2 (x²-2=0的解)</div>
+            </div>
+            
+            <div class="tree-node transcendental highlight" @click="selectType('transcendental')">
+              <div class="node-icon">⭐</div>
+              <div class="node-title">超越数</div>
+              <div class="node-description">不是任何整系数多项式的根</div>
+              <div class="node-examples">如: π, e</div>
+              <div class="e-badge">← e 在这里！</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 说明卡片 -->
+        <div v-if="selectedType" class="type-explanation">
+          <h4>{{ typeInfo[selectedType].title }}</h4>
+          <p>{{ typeInfo[selectedType].description }}</p>
+          <div class="proof-box">
+            <div class="proof-title">📜 历史证明</div>
+            <div class="proof-content">{{ typeInfo[selectedType].proof }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: e的值 -->
+    <section class="story-section" id="e-value">
+      <h2 class="section-title">🎯 e的精确值</h2>
+      
+      <div class="e-value-display">
+        <div class="value-main">
+          <span class="value-integer">2</span>
+          <span class="value-dot">.</span>
+          <span class="value-decimals">7182818284</span>
+          <span class="value-more">5904523536...</span>
+        </div>
+        
+        <div class="value-controls">
+          <el-button @click="showMoreDigits">显示更多位数</el-button>
+          <el-button @click="playDigits" :icon="Playing">朗读数字</el-button>
+        </div>
+        
+        <div class="digits-display">
+          <p class="digits-count">已显示：{{ displayedDigits }} 位小数</p>
+          <div class="all-digits">
+            <span>2.</span>
+            <span v-for="(digit, index) in eDigits.slice(0, displayedDigits)" :key="index" 
+                  class="digit" 
+                  :class="{ 'new-digit': index >= displayedDigits - 10 }">
+              {{ digit }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- e的无限性 -->
+      <div class="infinity-card">
+        <h3>♾️ e是无限不循环小数</h3>
+        <p>e的小数部分永远不会重复，也永远不会终止。这意味着：</p>
+        <ul>
+          <li>✨ 你永远无法精确写出e的全部数值</li>
+          <li>🔍 计算机可以计算出数万亿位，但仍然只是近似值</li>
+          <li>🎲 小数部分看起来是"随机"的，但实际上是确定的</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 3: e与微积分 -->
+    <section class="story-section" id="calculus">
+      <h2 class="section-title">📐 e在微积分中的特殊性</h2>
+      
+      <div class="story-card">
+        <p class="story-text">
+          e最神奇的性质是：<strong>e<sup>x</sup>的导数还是它自己！</strong>
+        </p>
+        <div class="formula-display">
+          <div class="formula-latex" v-html="renderFormula('\\frac{d}{dx}e^x = e^x')"></div>
+        </div>
+        <p class="story-text">
+          这意味着，无论你对 e<sup>x</sup> 求多少次导数，结果都不变！
+        </p>
+      </div>
+
+      <!-- 交互式导数演示 -->
+      <div class="interactive-box">
+        <h3 class="interactive-title">🎮 导数魔法演示</h3>
+        
+        <div class="derivative-demo">
+          <div class="function-selector">
+            <el-radio-group v-model="selectedFunction">
+              <el-radio-button label="ex">e<sup>x</sup></el-radio-button>
+              <el-radio-button label="x2">x²</el-radio-button>
+              <el-radio-button label="sin">sin(x)</el-radio-button>
+              <el-radio-button label="2x">2<sup>x</sup></el-radio-button>
+            </el-radio-group>
+          </div>
+
+          <div class="derivative-steps">
+            <div class="step-card" v-for="(step, index) in derivativeSteps" :key="index">
+              <div class="step-label">第{{ index + 1 }}次求导</div>
+              <div class="step-formula" v-html="renderFormula(step.formula)"></div>
+              <div class="step-note">{{ step.note }}</div>
+            </div>
+          </div>
+
+          <div class="chart-wrapper">
+            <div ref="derivativeChart" class="chart-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: 泰勒级数 -->
+    <section class="story-section" id="taylor-series">
+      <h2 class="section-title">🎪 泰勒级数：e的另一个定义</h2>
+      
+      <div class="story-card">
+        <p class="story-text">
+          除了极限定义，e还可以用泰勒级数表示：
+        </p>
+        <div class="formula-display">
+          <div class="formula-latex" v-html="renderFormula('e = \\sum_{n=0}^{\\infty} \\frac{1}{n!} = 1 + 1 + \\frac{1}{2!} + \\frac{1}{3!} + \\frac{1}{4!} + \\cdots')"></div>
+        </div>
+      </div>
+
+      <!-- 交互式泰勒级数计算 -->
+      <div class="interactive-box">
+        <h3 class="interactive-title">🧮 逼近e的值</h3>
+        
+        <div class="taylor-calculator">
+          <div class="control-item">
+            <label>计算到第 {{ taylorTerms }} 项</label>
+            <el-slider 
+              v-model="taylorTerms" 
+              :min="1" 
+              :max="20" 
+              :step="1"
+              show-stops
+              @change="calculateTaylor"
+            />
+          </div>
+
+          <div class="taylor-result">
+            <div class="result-value">
+              <span class="label">近似值:</span>
+              <span class="value">{{ taylorSum.toFixed(15) }}</span>
+            </div>
+            <div class="result-error">
+              <span class="label">与e的误差:</span>
+              <span class="value">{{ taylorError.toExponential(4) }}</span>
+            </div>
+          </div>
+
+          <div class="taylor-terms">
+            <div class="term-card" v-for="(term, index) in taylorTermsList" :key="index">
+              <div class="term-index">n={{ index }}</div>
+              <div class="term-formula">1/{{ index }}! = {{ term.toFixed(10) }}</div>
+            </div>
+          </div>
+
+          <div class="chart-wrapper">
+            <div ref="taylorChart" class="chart-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: e与其他常数的关系 -->
+    <section class="story-section" id="relations">
+      <h2 class="section-title">🔗 e与数学世界的联系</h2>
+      
+      <div class="relations-grid">
+        <div class="relation-card">
+          <div class="relation-icon">🥧</div>
+          <h4>e与π的关系</h4>
+          <div class="relation-formula" v-html="renderFormula('e^{i\\pi} + 1 = 0')"></div>
+          <p>欧拉恒等式：被称为"数学中最美丽的公式"</p>
+        </div>
+
+        <div class="relation-card">
+          <div class="relation-icon">🌊</div>
+          <h4>e与自然对数</h4>
+          <div class="relation-formula" v-html="renderFormula('\\ln(e) = 1, \\quad e^{\\ln(x)} = x')"></div>
+          <p>e是自然对数的底数</p>
+        </div>
+
+        <div class="relation-card">
+          <div class="relation-icon">📈</div>
+          <h4>e与增长</h4>
+          <div class="relation-formula" v-html="renderFormula('\\lim_{n \\to \\infty} \\left(1 + \\frac{1}{n}\\right)^n = e')"></div>
+          <p>连续复利增长的极限</p>
+        </div>
+
+        <div class="relation-card">
+          <div class="relation-icon">∞</div>
+          <h4>e与无穷级数</h4>
+          <div class="relation-formula" v-html="renderFormula('e = \\lim_{n \\to \\infty} \\left(1 + \\frac{1}{n}\\right)^n')"></div>
+          <p>多种级数表示</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 相关概念 -->
+    <section class="concepts-section">
+      <h3 class="concepts-title">💡 相关概念</h3>
+      <div class="concept-tags">
+        <el-tag type="primary">超越数</el-tag>
+        <el-tag type="success">无理数</el-tag>
+        <el-tag type="warning">导数</el-tag>
+        <el-tag type="danger">泰勒级数</el-tag>
+        <el-tag type="info">欧拉恒等式</el-tag>
+        <el-tag>自然对数</el-tag>
+        <el-tag>微积分</el-tag>
+      </div>
+    </section>
   </div>
 </template>
 
 <script setup lang="ts">
-// 章节${i}的逻辑将在这里实现
-</script>
+import { ref, computed, onMounted, watch } from 'vue'
+import { Playing } from '@element-plus/icons-vue'
+import * as echarts from 'echarts'
+import katex from 'katex'
+import 'katex/dist/katex.min.css'
+import MascotCat from '@/components/common/MascotCat.vue'
 
-<style scoped lang="scss">
-.chapter {
-  padding: 40px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+// 吉祥物状态
+const mascotEmotion = ref<'happy' | 'thinking' | 'excited' | 'surprised'>('thinking')
+const mascotMessage = ref('让我们探索e在数学中的特殊地位！🔬')
+
+// e的小数位
+const eDigits = '71828182845904523536028747135266249775724709369995957496696762772407663035354759457138217852516642742746639193200305992181741359662904357290033429526059563073813232862794349076323382988075319525101901157383418793070215408914993488416750924476146066808226480016847741185374234544243710753907774499206955170276183860626133138458300075204493382656029760673711320070932870912744374704723069697720931014169283681902551510865746377211125238978442505695369677078544996996794686445490598793163688923009879312773617821542499922957635148220826989519366803318252886939849646510582093923982948879332036250944311730123819706841614039701983767932068328237646480429531180232878250981945581530175671736133206981125099618188159304169035159888851934580727386673858942287922849989208680582574927961048419844436346324496848756023362482704197862320900216099023530436994184914631409343173814364054625315209618369088870701676839642437814059271456354906130310720851038375051011447136548707603967249275783235643866
+const displayedDigits = ref(10)
+
+// 显示更多位数
+function showMoreDigits() {
+  displayedDigits.value = Math.min(displayedDigits.value + 50, eDigits.length)
 }
 
-.chapter-header {
-  text-align: center;
-  margin-bottom: 40px;
+// 朗读数字（模拟）
+function playDigits() {
+  alert('数字朗读功能：2.718281828...')
+}
+
+// 数字分类
+const selectedType = ref('transcendental')
+
+const typeInfo = {
+  rational: {
+    title: '有理数',
+    description: '有理数是可以表示为两个整数之比的数，如 1/2, 3/4, 5等。它们的小数要么是有限的，要么是循环的。',
+    proof: '有理数的定义很简单，只要能写成 p/q 的形式（p、q是整数，q≠0），就是有理数。'
+  },
+  irrational: {
+    title: '无理数',
+    description: '无理数不能表示为两个整数的比值，其小数部分无限不循环。e、π、√2 都是无理数。',
+    proof: '欧拉在1748年证明了e是无理数。证明方法使用了反证法和e的级数表示。'
+  },
+  algebraic: {
+    title: '代数数',
+    description: '代数数是某个整系数多项式方程的根。例如√2是方程x²-2=0的根，所以√2是代数数。',
+    proof: '所有有理数都是代数数（一次方程的根），但有些无理数也是代数数，如√2。'
+  },
+  transcendental: {
+    title: '超越数',
+    description: 'e是超越数，意味着它不是任何整系数多项式方程的根。这使得e比代数数更"特殊"。',
+    proof: '法国数学家夏尔·埃尔米特在1873年首次证明了e是超越数。这是数学史上的重大突破！'
+  }
+}
+
+function selectType(type: string) {
+  selectedType.value = type
+  mascotEmotion.value = 'excited'
+  mascotMessage.value = `${typeInfo[type].title}很有趣对不对？继续探索！`
+}
+
+// 导数演示
+const selectedFunction = ref('ex')
+const derivativeChart = ref<HTMLElement | null>(null)
+let derivativeChartInstance: echarts.ECharts | null = null
+
+const derivativeSteps = computed(() => {
+  const steps = {
+    'ex': [
+      { formula: 'f(x) = e^x', note: '原函数' },
+      { formula: 'f\'(x) = e^x', note: '一次导数，还是自己！' },
+      { formula: 'f\'\'(x) = e^x', note: '二次导数，依然是自己！' },
+      { formula: 'f\'\'\'(x) = e^x', note: '三次导数，永远不变！' }
+    ],
+    'x2': [
+      { formula: 'f(x) = x^2', note: '原函数' },
+      { formula: 'f\'(x) = 2x', note: '一次导数' },
+      { formula: 'f\'\'(x) = 2', note: '二次导数，变成常数' },
+      { formula: 'f\'\'\'(x) = 0', note: '三次导数，变成0' }
+    ],
+    'sin': [
+      { formula: 'f(x) = \\sin(x)', note: '原函数' },
+      { formula: 'f\'(x) = \\cos(x)', note: '一次导数，变成余弦' },
+      { formula: 'f\'\'(x) = -\\sin(x)', note: '二次导数，变负' },
+      { formula: 'f\'\'\'(x) = -\\cos(x)', note: '三次导数，循环' }
+    ],
+    '2x': [
+      { formula: 'f(x) = 2^x', note: '原函数' },
+      { formula: 'f\'(x) = 2^x \\ln(2)', note: '一次导数，多了ln(2)' },
+      { formula: 'f\'\'(x) = 2^x (\\ln(2))^2', note: '二次导数' },
+      { formula: 'f\'\'\'(x) = 2^x (\\ln(2))^3', note: '三次导数' }
+    ]
+  }
+  return steps[selectedFunction.value] || steps['ex']
+})
+
+// 泰勒级数
+const taylorTerms = ref(10)
+const taylorSum = ref(0)
+const taylorError = ref(0)
+const taylorTermsList = ref<number[]>([])
+const taylorChart = ref<HTMLElement | null>(null)
+let taylorChartInstance: echarts.ECharts | null = null
+
+const E_VALUE = 2.718281828459045
+
+function calculateTaylor() {
+  let sum = 0
+  const terms: number[] = []
   
-  .back-btn {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: #2E86DE;
-    text-decoration: none;
-    font-size: 16px;
+  for (let n = 0; n < taylorTerms.value; n++) {
+    const factorial = (n === 0) ? 1 : Array.from({length: n}, (_, i) => i + 1).reduce((a, b) => a * b, 1)
+    const term = 1 / factorial
+    terms.push(term)
+    sum += term
+  }
+  
+  taylorSum.value = sum
+  taylorError.value = Math.abs(sum - E_VALUE)
+  taylorTermsList.value = terms
+  
+  updateTaylorChart()
+}
+
+function updateTaylorChart() {
+  if (!taylorChartInstance || !taylorChart.value) return
+  
+  const data = []
+  let sum = 0
+  for (let n = 0; n < taylorTerms.value; n++) {
+    const factorial = (n === 0) ? 1 : Array.from({length: n}, (_, i) => i + 1).reduce((a, b) => a * b, 1)
+    sum += 1 / factorial
+    data.push(sum)
+  }
+  
+  const option = {
+    title: {
+      text: 'e的泰勒级数逼近过程',
+      left: 'center'
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
+    xAxis: {
+      type: 'category',
+      data: Array.from({length: taylorTerms.value}, (_, i) => `n=${i}`)
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        name: '累加和',
+        type: 'line',
+        data: data,
+        smooth: true,
+        markLine: {
+          data: [
+            { yAxis: E_VALUE, label: { formatter: 'e = 2.71828...' } }
+          ]
+        }
+      }
+    ]
+  }
+  
+  taylorChartInstance.setOption(option)
+}
+
+// 渲染数学公式
+function renderFormula(latex: string): string {
+  try {
+    return katex.renderToString(latex, {
+      displayMode: true,
+      throwOnError: false
+    })
+  } catch (e) {
+    console.error('KaTeX 渲染错误:', e)
+    return latex
+  }
+}
+
+// 初始化
+onMounted(() => {
+  calculateTaylor()
+  
+  if (taylorChart.value) {
+    taylorChartInstance = echarts.init(taylorChart.value)
+    updateTaylorChart()
+  }
+  
+  if (derivativeChart.value) {
+    derivativeChartInstance = echarts.init(derivativeChart.value)
+    updateDerivativeChart()
+  }
+})
+
+function updateDerivativeChart() {
+  if (!derivativeChartInstance) return
+  
+  const xData = []
+  const yData: {[key: string]: number[]} = {}
+  
+  for (let x = -2; x <= 2; x += 0.1) {
+    xData.push(x.toFixed(1))
     
-    &:hover {
-      text-decoration: underline;
+    if (!yData[selectedFunction.value]) {
+      yData[selectedFunction.value] = []
+    }
+    
+    switch (selectedFunction.value) {
+      case 'ex':
+        yData[selectedFunction.value].push(Math.exp(x))
+        break
+      case 'x2':
+        yData[selectedFunction.value].push(x * x)
+        break
+      case 'sin':
+        yData[selectedFunction.value].push(Math.sin(x))
+        break
+      case '2x':
+        yData[selectedFunction.value].push(Math.pow(2, x))
+        break
     }
   }
   
-  h1 {
-    font-size: 36px;
-    color: #2E86DE;
-    margin-bottom: 10px;
+  const option = {
+    title: {
+      text: `函数曲线: ${selectedFunction.value}`,
+      left: 'center'
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
+    xAxis: {
+      type: 'category',
+      data: xData
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        name: selectedFunction.value,
+        type: 'line',
+        data: yData[selectedFunction.value],
+        smooth: true
+      }
+    ]
   }
   
-  .dev-notice {
-    color: #F39C12;
-    font-size: 18px;
+  derivativeChartInstance.setOption(option)
+}
+
+watch(selectedFunction, () => {
+  updateDerivativeChart()
+  mascotEmotion.value = 'thinking'
+  mascotMessage.value = `看看${selectedFunction.value}的导数规律！`
+})
+
+watch(taylorTerms, () => {
+  calculateTaylor()
+})
+</script>
+
+<style scoped lang="scss">
+@use '@/styles/variables.scss' as *;
+
+.chapter2 {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+// 继承 Chapter1 的基础样式
+.chapter-header,
+.section-title,
+.story-section,
+.story-card,
+.interactive-box {
+  // 使用与 Chapter1 相同的样式
+}
+
+// 数字分类树
+.number-classification {
+  margin: 2rem 0;
+  
+  .tree-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 20px;
+    
+    .tree-level {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      
+      .tree-node {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        border: 3px solid #e0e0e0;
+        min-width: 220px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        &.active {
+          border-color: $color-secondary;
+          background: lighten($color-secondary, 45%);
+        }
+        
+        &.highlight {
+          border-color: $color-accent;
+          box-shadow: 0 0 20px rgba($color-accent, 0.5);
+          
+          .e-badge {
+            position: absolute;
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: $color-accent;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            white-space: nowrap;
+          }
+        }
+        
+        .node-icon {
+          font-size: 2.5rem;
+          text-align: center;
+          margin-bottom: 0.5rem;
+        }
+        
+        .node-title {
+          font-size: 1.3rem;
+          font-weight: bold;
+          color: $color-primary;
+          text-align: center;
+          margin-bottom: 0.5rem;
+        }
+        
+        .node-description {
+          font-size: 0.95rem;
+          color: $text-secondary;
+          text-align: center;
+          margin-bottom: 0.5rem;
+        }
+        
+        .node-examples {
+          font-size: 0.85rem;
+          color: $text-tertiary;
+          text-align: center;
+          font-style: italic;
+        }
+      }
+    }
+  }
+  
+  .type-explanation {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    border: 3px solid $color-primary;
+    
+    h4 {
+      font-size: 1.5rem;
+      color: $color-primary;
+      margin-bottom: 1rem;
+    }
+    
+    .proof-box {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: lighten($color-accent, 40%);
+      border-left: 4px solid $color-accent;
+      border-radius: 8px;
+      
+      .proof-title {
+        font-weight: bold;
+        color: $color-accent;
+        margin-bottom: 0.5rem;
+      }
+      
+      .proof-content {
+        color: $text-secondary;
+        line-height: 1.6;
+      }
+    }
   }
 }
 
-.chapter-content {
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+// e的值显示
+.e-value-display {
   text-align: center;
-  font-size: 18px;
-  color: #666;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  color: white;
+  
+  .value-main {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    font-family: 'Courier New', monospace;
+    
+    .value-integer {
+      color: $color-accent;
+    }
+    
+    .value-decimals {
+      color: white;
+    }
+    
+    .value-more {
+      opacity: 0.7;
+    }
+  }
+  
+  .value-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .digits-display {
+    background: rgba(255,255,255,0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    
+    .digits-count {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    
+    .all-digits {
+      font-family: 'Courier New', monospace;
+      font-size: 1.2rem;
+      word-break: break-all;
+      line-height: 2;
+      
+      .digit {
+        display: inline-block;
+        padding: 0.2rem;
+        transition: all 0.3s ease;
+        
+        &.new-digit {
+          background: $color-accent;
+          color: white;
+          border-radius: 4px;
+          animation: highlight 0.6s ease;
+        }
+      }
+    }
+  }
+}
+
+@keyframes highlight {
+  0% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.infinity-card {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 15px;
+  border: 3px solid $color-info;
+  
+  h3 {
+    color: $color-info;
+    margin-bottom: 1rem;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    
+    li {
+      padding: 0.5rem 0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+  }
+}
+
+// 导数演示
+.derivative-demo {
+  .function-selector {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .derivative-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+    
+    .step-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid $color-primary;
+      text-align: center;
+      
+      .step-label {
+        font-weight: bold;
+        color: $color-primary;
+        margin-bottom: 0.5rem;
+      }
+      
+      .step-formula {
+        margin: 1rem 0;
+        font-size: 1.1rem;
+      }
+      
+      .step-note {
+        font-size: 0.9rem;
+        color: $text-secondary;
+        font-style: italic;
+      }
+    }
+  }
+}
+
+// 泰勒级数计算器
+.taylor-calculator {
+  .taylor-result {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+    
+    > div {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 2px solid $color-secondary;
+      
+      .label {
+        display: block;
+        font-size: 0.9rem;
+        color: $text-secondary;
+        margin-bottom: 0.5rem;
+      }
+      
+      .value {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: $color-primary;
+        font-family: 'Courier New', monospace;
+      }
+    }
+  }
+  
+  .taylor-terms {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 1rem;
+    background: #f5f5f5;
+    border-radius: 12px;
+    
+    .term-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      
+      .term-index {
+        font-size: 0.9rem;
+        color: $text-tertiary;
+        margin-bottom: 0.3rem;
+      }
+      
+      .term-formula {
+        font-family: 'Courier New', monospace;
+        font-size: 0.95rem;
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+// 关系卡片
+.relations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+  
+  .relation-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    border: 3px solid $color-primary;
+    text-align: center;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba($color-primary, 0.3);
+    }
+    
+    .relation-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    
+    h4 {
+      font-size: 1.2rem;
+      color: $color-primary;
+      margin-bottom: 1rem;
+    }
+    
+    .relation-formula {
+      margin: 1.5rem 0;
+      font-size: 1.1rem;
+    }
+    
+    p {
+      font-size: 0.95rem;
+      color: $text-secondary;
+      line-height: 1.6;
+    }
+  }
+}
+
+// 图表容器
+.chart-wrapper {
+  margin-top: 2rem;
+  
+  .chart-container {
+    height: 400px;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+  }
+}
+
+// 公式显示
+.formula-display {
+  text-align: center;
+  padding: 2rem;
+  background: lighten($color-primary, 45%);
+  border-radius: 15px;
+  margin: 1.5rem 0;
+  
+  .formula-latex {
+    font-size: 1.5rem;
+  }
+}
+
+// 吉祥物
+.chapter-mascot {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 100;
+}
+
+// 概念标签
+.concepts-section {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 15px;
+  
+  .concepts-title {
+    font-size: 1.3rem;
+    color: $color-primary;
+    margin-bottom: 1rem;
+  }
+  
+  .concept-tags {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    
+    :deep(.el-tag) {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+// 移动端适配
+@media (max-width: 768px) {
+  .chapter2 {
+    padding: 1rem;
+  }
+  
+  .number-classification .tree-container {
+    padding: 1rem;
+    
+    .tree-level .tree-node {
+      min-width: 100%;
+      
+      &.highlight .e-badge {
+        position: static;
+        display: inline-block;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+  
+  .e-value-display .value-main {
+    font-size: 2.5rem;
+  }
+  
+  .taylor-result {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .relations-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-wrapper .chart-container {
+    height: 300px;
+  }
 }
 </style>
