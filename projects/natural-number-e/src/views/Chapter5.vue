@@ -424,6 +424,7 @@ import * as echarts from 'echarts'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
 import MascotCat from '@/components/common/MascotCat.vue'
+import { initChart, setupChartResize } from '@/utils/echartsHelper'
 
 // 吉祥物消息
 const mascotMessage = ref('让我们探索数学常数之间的美妙联系，发现数学的终极美！✨')
