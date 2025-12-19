@@ -112,8 +112,17 @@ const navItems = [
     .nav-menu {
       display: flex;
       gap: 1.5rem;
+      flex-wrap: wrap;
       
-      @media (max-width: 968px) {
+      @media (max-width: 1200px) {
+        gap: 1rem;
+      }
+      
+      @media (max-width: 1024px) {
+        gap: 0.75rem;
+      }
+      
+      @media (max-width: 900px) {
         display: none;
       }
       
@@ -124,6 +133,17 @@ const navItems = [
         padding: 0.5rem 1rem;
         border-radius: 20px;
         transition: all 0.3s ease;
+        white-space: nowrap;
+        
+        @media (max-width: 1200px) {
+          font-size: 0.95rem;
+          padding: 0.4rem 0.8rem;
+        }
+        
+        @media (max-width: 1024px) {
+          font-size: 0.9rem;
+          padding: 0.4rem 0.7rem;
+        }
         
         &:hover {
           background: rgba(255,255,255,0.2);
@@ -190,7 +210,7 @@ const navItems = [
 }
 
 // 移动端适配
-@media (max-width: 968px) {
+@media (max-width: 900px) {
   .app-header .header-content {
     padding: 1rem;
     
