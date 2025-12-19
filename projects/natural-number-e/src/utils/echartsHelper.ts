@@ -14,8 +14,8 @@ import type { EChartsOption, ECharts } from 'echarts'
  */
 export async function initChart(
   container: HTMLElement | null,
-  retries = 3,
-  retryDelay = 100
+  retries = 10,
+  retryDelay = 200
 ): Promise<ECharts | null> {
   if (!container) {
     console.warn('[ECharts Helper] 容器不存在')
@@ -31,12 +31,19 @@ export async function initChart(
 
   // 如果尺寸为 0,等待并重试
   for (let i = 0; i < retries; i++) {
+    // 等待动画和 DOM 渲染
+    if (i > 0) {
+      await new Promise(resolve => requestAnimationFrame(resolve))
+      await new Promise(resolve => setTimeout(resolve, retryDelay))
+    }
+
     if (checkSize()) {
       try {
         const instance = echarts.init(container)
         console.log('[ECharts Helper] 图表初始化成功', {
           width: container.clientWidth,
-          height: container.clientHeight
+          height: container.clientHeight,
+          retries: i
         })
         return instance
       } catch (error) {
@@ -45,13 +52,36 @@ export async function initChart(
       }
     }
 
-    // 等待 DOM 渲染
-    console.warn(`[ECharts Helper] 容器尺寸为 0, 重试 ${i + 1}/${retries}`)
-    await new Promise(resolve => setTimeout(resolve, retryDelay))
+    // 日志记录
+    if (i < retries - 1) {
+      console.warn(`[ECharts Helper] 容器尺寸为 0, 重试 ${i + 1}/${retries}`, {
+        width: container.clientWidth,
+        height: container.clientHeight,
+        display: getComputedStyle(container).display,
+        visibility: getComputedStyle(container).visibility
+      })
+    }
   }
 
-  console.error('[ECharts Helper] 无法初始化图表: 容器尺寸始终为 0')
-  return null
+  // 最后的尝试：强制初始化（即使尺寸为 0）
+  console.warn('[ECharts Helper] 容器尺寸始终为 0，强制初始化并延迟渲染')
+  try {
+    const instance = echarts.init(container)
+    // 延迟 resize 以适应后续的尺寸变化
+    setTimeout(() => {
+      if (instance && !instance.isDisposed() && checkSize()) {
+        instance.resize()
+        console.log('[ECharts Helper] 延迟 resize 成功', {
+          width: container.clientWidth,
+          height: container.clientHeight
+        })
+      }
+    }, 500)
+    return instance
+  } catch (error) {
+    console.error('[ECharts Helper] 强制初始化也失败', error)
+    return null
+  }
 }
 
 /**
