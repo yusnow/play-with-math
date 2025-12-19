@@ -457,6 +457,20 @@
       </div>
     </section>
 
+    <!-- ✨ 增强版探索实验室 -->
+    <section class="enhanced-lab-section" id="enhanced-lab">
+      <div class="section-header">
+        <h2>
+          <el-icon class="section-icon"><Operation /></el-icon>
+          增强版探索实验室
+        </h2>
+        <p class="section-desc">完整的函数探索、数值实验和可视化编程功能</p>
+      </div>
+      
+      <!-- 集成 Chapter6Lab 组件 -->
+      <Chapter6Lab />
+    </section>
+
     <!-- 章节导航 -->
     <footer class="chapter-footer">
       <el-button @click="$router.push('/chapter5')" size="large">
@@ -478,6 +492,7 @@ import * as echarts from 'echarts'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
 import MascotCat from '@/components/common/MascotCat.vue'
+import Chapter6Lab from './Chapter6Lab.vue'
 
 // 吉祥物消息
 const mascotMessage = ref('欢迎来到探索实验室！动手实践，深度理解 e 的每一个细节！🔬')
@@ -1057,20 +1072,29 @@ const achievements = ref([
 ])
 
 // ========== 生命周期 ==========
-onMounted(() => {
-  nextTick(() => {
-    initFunctionChart()
-    initLimitChart()
-    updateParametricPlot()
-    calculateSeries()
-    calculateIntegral()
-    
-    // 响应式处理
-    window.addEventListener('resize', () => {
-      functionChartInstance?.resize()
-      limitChartInstance?.resize()
-    })
-  })
+let cleanupFunction: (() => void) | null = null
+let cleanupLimit: (() => void) | null = null
+
+onMounted(async () => {
+  await nextTick()
+  
+  await initFunctionChart()
+  await initLimitChart()
+  updateParametricPlot()
+  calculateSeries()
+  calculateIntegral()
+  
+  // ✅ 设置响应式调整
+  if (functionChartInstance) cleanupFunction = setupChartResize(functionChartInstance, functionChart.value!)
+  if (limitChartInstance) cleanupLimit = setupChartResize(limitChartInstance, limitChart.value!)
+})
+
+onUnmounted(() => {
+  if (cleanupFunction) cleanupFunction()
+  if (cleanupLimit) cleanupLimit()
+  
+  if (functionChartInstance && !functionChartInstance.isDisposed()) functionChartInstance.dispose()
+  if (limitChartInstance && !limitChartInstance.isDisposed()) limitChartInstance.dispose()
 })
 </script>
 
@@ -1737,6 +1761,35 @@ onMounted(() => {
         font-size: 13px;
         color: #666;
       }
+    }
+  }
+}
+
+// ✨ 增强版实验室分区
+.enhanced-lab-section {
+  margin: 80px 0 60px;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 20px;
+  
+  .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+    
+    h2 {
+      font-size: 32px;
+      color: #2c3e50;
+      margin-bottom: 12px;
+      
+      .section-icon {
+        color: #3498db;
+        margin-right: 12px;
+      }
+    }
+    
+    .section-desc {
+      font-size: 16px;
+      color: #666;
     }
   }
 }

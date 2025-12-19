@@ -539,12 +539,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { Back, TrendCharts, PieChart, Lightning, Money, Connection, Plus, Close, ArrowLeft, ArrowRight, HomeFilled } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
 import MascotCat from '@/components/common/MascotCat.vue'
+import { initChart, setupChartResize } from '@/utils/echartsHelper'
 
 // 吉祥物消息
 const mascotMessage = ref('探索 e 在各个领域的实际应用，从自然界到金融市场，e 无处不在！🌍')
@@ -655,9 +656,10 @@ const updateGrowthChart = () => {
   growthChartInstance.setOption(option)
 }
 
-const initGrowthChart = () => {
+const initGrowthChart = async () => {
   if (!growthChart.value) return
-  growthChartInstance = echarts.init(growthChart.value)
+  growthChartInstance = await initChart(growthChart.value)
+  if (!growthChartInstance) return
   updateGrowthChart()
 }
 
@@ -763,9 +765,10 @@ const updateProbability = () => {
   probability.value = Math.abs(p2 - p1)
 }
 
-const initNormalChart = () => {
+const initNormalChart = async () => {
   if (!normalChart.value) return
-  normalChartInstance = echarts.init(normalChart.value)
+  normalChartInstance = await initChart(normalChart.value)
+  if (!normalChartInstance) return
   updateNormalChart()
 }
 
@@ -864,9 +867,10 @@ const updatePhysicsChart = () => {
   physicsChartInstance.setOption(option)
 }
 
-const initPhysicsChart = () => {
+const initPhysicsChart = async () => {
   if (!physicsChart.value) return
-  physicsChartInstance = echarts.init(physicsChart.value)
+  physicsChartInstance = await initChart(physicsChart.value)
+  if (!physicsChartInstance) return
   updatePhysicsChart()
 }
 
@@ -976,9 +980,10 @@ const updateFinanceChart = () => {
   financeChartInstance.setOption(option)
 }
 
-const initFinanceChart = () => {
+const initFinanceChart = async () => {
   if (!financeChart.value) return
-  financeChartInstance = echarts.init(financeChart.value)
+  financeChartInstance = await initChart(financeChart.value)
+  if (!financeChartInstance) return
   updateFinanceChart()
 }
 
@@ -1062,30 +1067,48 @@ const updateSignalChart = () => {
   signalChartInstance.setOption(option)
 }
 
-const initSignalChart = () => {
+const initSignalChart = async () => {
   if (!signalChart.value) return
-  signalChartInstance = echarts.init(signalChart.value)
+  signalChartInstance = await initChart(signalChart.value)
+  if (!signalChartInstance) return
   updateSignalChart()
 }
 
 // ========== 生命周期 ==========
-onMounted(() => {
-  nextTick(() => {
-    initGrowthChart()
-    initNormalChart()
-    initPhysicsChart()
-    initFinanceChart()
-    initSignalChart()
-    updateProbability()
-    
-    // 响应式处理
-    window.addEventListener('resize', () => {
-      growthChartInstance?.resize()
-      normalChartInstance?.resize()
-      physicsChartInstance?.resize()
-      financeChartInstance?.resize()
-      signalChartInstance?.resize()
-    })
+let cleanupGrowth: (() => void) | null = null
+let cleanupNormal: (() => void) | null = null
+let cleanupPhysics: (() => void) | null = null
+let cleanupFinance: (() => void) | null = null
+let cleanupSignal: (() => void) | null = null
+
+onMounted(async () => {
+  await nextTick()
+  
+  await initGrowthChart()
+  await initNormalChart()
+  await initPhysicsChart()
+  await initFinanceChart()
+  await initSignalChart()
+  updateProbability()
+  
+  // ✅ 设置响应式调整
+  if (growthChartInstance) cleanupGrowth = setupChartResize(growthChartInstance, growthChart.value!)
+  if (normalChartInstance) cleanupNormal = setupChartResize(normalChartInstance, normalChart.value!)
+  if (physicsChartInstance) cleanupPhysics = setupChartResize(physicsChartInstance, physicsChart.value!)
+  if (financeChartInstance) cleanupFinance = setupChartResize(financeChartInstance, financeChart.value!)
+  if (signalChartInstance) cleanupSignal = setupChartResize(signalChartInstance, signalChart.value!)
+})
+
+onUnmounted(() => {
+  if (cleanupGrowth) cleanupGrowth()
+  if (cleanupNormal) cleanupNormal()
+  if (cleanupPhysics) cleanupPhysics()
+  if (cleanupFinance) cleanupFinance()
+  if (cleanupSignal) cleanupSignal()
+  
+  const charts = [growthChartInstance, normalChartInstance, physicsChartInstance, financeChartInstance, signalChartInstance]
+  charts.forEach(chart => {
+    if (chart && !chart.isDisposed()) chart.dispose()
   })
 })
 </script>

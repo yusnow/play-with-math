@@ -532,9 +532,10 @@ const updateEulerVisualization = () => {
   complexPlaneChart.setOption(option)
 }
 
-const initComplexPlane = () => {
+const initComplexPlane = async () => {
   if (!complexPlane.value) return
-  complexPlaneChart = echarts.init(complexPlane.value)
+  complexPlaneChart = await initChart(complexPlane.value)
+  if (!complexPlaneChart) return
   updateEulerVisualization()
 }
 
@@ -610,9 +611,10 @@ const updateFibonacciChart = () => {
   fibChartInstance.setOption(option)
 }
 
-const initFibChart = () => {
+const initFibChart = async () => {
   if (!fibChart.value) return
-  fibChartInstance = echarts.init(fibChart.value)
+  fibChartInstance = await initChart(fibChart.value)
+  if (!fibChartInstance) return
   updateFibonacciChart()
 }
 
@@ -736,10 +738,11 @@ const mathematicalConstants = [
 const networkChart = ref<HTMLElement | null>(null)
 let networkChartInstance: echarts.ECharts | null = null
 
-const initNetworkChart = () => {
+const initNetworkChart = async () => {
   if (!networkChart.value) return
   
-  networkChartInstance = echarts.init(networkChart.value)
+  networkChartInstance = await initChart(networkChart.value)
+  if (!networkChartInstance) return
   
   const option = {
     title: {
@@ -874,19 +877,32 @@ const selectFormula = (index: number) => {
 }
 
 // ========== 生命周期 ==========
-onMounted(() => {
-  nextTick(() => {
-    initComplexPlane()
-    initFibChart()
-    initNetworkChart()
-    drawGoldenSpiral()
-    
-    // 响应式处理
-    window.addEventListener('resize', () => {
-      complexPlaneChart?.resize()
-      fibChartInstance?.resize()
-      networkChartInstance?.resize()
-    })
+let cleanupComplex: (() => void) | null = null
+let cleanupFib: (() => void) | null = null
+let cleanupNetwork: (() => void) | null = null
+
+onMounted(async () => {
+  await nextTick()
+  
+  await initComplexPlane()
+  await initFibChart()
+  await initNetworkChart()
+  drawGoldenSpiral()
+  
+  // ✅ 设置响应式调整
+  if (complexPlaneChart) cleanupComplex = setupChartResize(complexPlaneChart, complexPlane.value!)
+  if (fibChartInstance) cleanupFib = setupChartResize(fibChartInstance, fibChart.value!)
+  if (networkChartInstance) cleanupNetwork = setupChartResize(networkChartInstance, networkChart.value!)
+})
+
+onUnmounted(() => {
+  if (cleanupComplex) cleanupComplex()
+  if (cleanupFib) cleanupFib()
+  if (cleanupNetwork) cleanupNetwork()
+  
+  const charts = [complexPlaneChart, fibChartInstance, networkChartInstance]
+  charts.forEach(chart => {
+    if (chart && !chart.isDisposed()) chart.dispose()
   })
 })
 </script>

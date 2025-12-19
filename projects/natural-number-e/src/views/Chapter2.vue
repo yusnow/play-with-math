@@ -286,12 +286,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { VideoPlay } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
 import MascotCat from '@/components/common/MascotCat.vue'
+import { initChart, setupChartResize } from '@/utils/echartsHelper'
 
 // 吉祥物状态
 const mascotEmotion = ref<'happy' | 'thinking' | 'excited' | 'surprised'>('thinking')
@@ -535,17 +536,37 @@ function renderFormula(latex: string): string {
 }
 
 // 初始化
-onMounted(() => {
+let cleanupTaylor: (() => void) | null = null
+let cleanupDerivative: (() => void) | null = null
+
+onMounted(async () => {
   calculateTaylor()
   
-  if (taylorChart.value) {
-    taylorChartInstance = echarts.init(taylorChart.value)
+  await nextTick()
+  
+  // ✅ 安全初始化 Taylor 图表
+  taylorChartInstance = await initChart(taylorChart.value)
+  if (taylorChartInstance) {
     updateTaylorChart()
+    cleanupTaylor = setupChartResize(taylorChartInstance, taylorChart.value!)
   }
   
-  if (derivativeChart.value) {
-    derivativeChartInstance = echarts.init(derivativeChart.value)
+  // ✅ 安全初始化导数图表
+  derivativeChartInstance = await initChart(derivativeChart.value)
+  if (derivativeChartInstance) {
     updateDerivativeChart()
+    cleanupDerivative = setupChartResize(derivativeChartInstance, derivativeChart.value!)
+  }
+})
+
+onUnmounted(() => {
+  if (cleanupTaylor) cleanupTaylor()
+  if (cleanupDerivative) cleanupDerivative()
+  if (taylorChartInstance && !taylorChartInstance.isDisposed()) {
+    taylorChartInstance.dispose()
+  }
+  if (derivativeChartInstance && !derivativeChartInstance.isDisposed()) {
+    derivativeChartInstance.dispose()
   }
 })
 

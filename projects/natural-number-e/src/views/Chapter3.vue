@@ -327,12 +327,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { Back, MagicStick, TrendCharts, Grid, Cpu, DataAnalysis, VideoPlay, ArrowLeft, ArrowRight, HomeFilled } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
 import MascotCat from '@/components/common/MascotCat.vue'
+import { initChart, setupChartResize } from '@/utils/echartsHelper'
 
 // 吉祥物消息
 const mascotMessage = ref('让我们深入探索 e 的级数展开，看看如何通过无限求和逼近这个神奇的数字！🎯')
@@ -395,10 +396,11 @@ const updateSeries = () => {
 const convergenceChart = ref<HTMLElement | null>(null)
 let convergenceChartInstance: echarts.ECharts | null = null
 
-const initConvergenceChart = () => {
+const initConvergenceChart = async () => {
   if (!convergenceChart.value) return
   
-  convergenceChartInstance = echarts.init(convergenceChart.value)
+  convergenceChartInstance = await initChart(convergenceChart.value)
+  if (!convergenceChartInstance) return
   
   const terms = []
   const sums = []
@@ -647,10 +649,11 @@ const precisionTable = computed(() => {
   return table
 })
 
-const initErrorChart = () => {
+const initErrorChart = async () => {
   if (!errorChart.value) return
   
-  errorChartInstance = echarts.init(errorChart.value)
+  errorChartInstance = await initChart(errorChart.value)
+  if (!errorChartInstance) return
   
   const terms = []
   const errors = []
@@ -727,20 +730,36 @@ const initErrorChart = () => {
 }
 
 // ========== 生命周期 ==========
-onMounted(() => {
+let cleanupConvergence: (() => void) | null = null
+let cleanupError: (() => void) | null = null
+
+onMounted(async () => {
   updateSeries()
   updateContinuedFraction()
   
-  nextTick(() => {
-    initConvergenceChart()
-    initErrorChart()
-    
-    // 响应式处理
-    window.addEventListener('resize', () => {
-      convergenceChartInstance?.resize()
-      errorChartInstance?.resize()
-    })
-  })
+  await nextTick()
+  
+  await initConvergenceChart()
+  await initErrorChart()
+  
+  // ✅ 设置响应式调整
+  if (convergenceChartInstance) {
+    cleanupConvergence = setupChartResize(convergenceChartInstance, convergenceChart.value!)
+  }
+  if (errorChartInstance) {
+    cleanupError = setupChartResize(errorChartInstance, errorChart.value!)
+  }
+})
+
+onUnmounted(() => {
+  if (cleanupConvergence) cleanupConvergence()
+  if (cleanupError) cleanupError()
+  if (convergenceChartInstance && !convergenceChartInstance.isDisposed()) {
+    convergenceChartInstance.dispose()
+  }
+  if (errorChartInstance && !errorChartInstance.isDisposed()) {
+    errorChartInstance.dispose()
+  }
 })
 </script>
 
