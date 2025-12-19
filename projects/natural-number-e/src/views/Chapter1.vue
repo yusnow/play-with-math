@@ -191,12 +191,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { StarFilled } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
 import MascotCat from '@/components/common/MascotCat.vue'
+import { initChart, getStandardChartOption, setupChartResize } from '@/utils/echartsHelper'
 
 // 交互式参数
 const principal = ref(1)
@@ -367,8 +368,11 @@ const chartContainer = ref<HTMLElement | null>(null)
 let chartInstance: echarts.ECharts | null = null
 
 // 初始化图表
-onMounted(() => {
-  initChart()
+let cleanupResize: (() => void) | null = null
+
+onMounted(async () => {
+  await nextTick()
+  await initializeChart()
 })
 
 // 监听参数变化,更新图表
@@ -376,12 +380,25 @@ watch([principal, rate, frequency], () => {
   updateChart()
 })
 
-function initChart() {
-  if (!chartContainer.value) return
-  
-  chartInstance = echarts.init(chartContainer.value)
-  updateChart()
+// ✅ 使用新的辅助函数安全初始化
+async function initializeChart() {
+  chartInstance = await initChart(chartContainer.value)
+  if (chartInstance) {
+    updateChart()
+    cleanupResize = setupChartResize(chartInstance, chartContainer.value!)
+  } else {
+    console.error('[Chapter1] 图表初始化失败')
+  }
 }
+
+// 组件卸载时清理
+import { onUnmounted } from 'vue'
+onUnmounted(() => {
+  if (cleanupResize) cleanupResize()
+  if (chartInstance && !chartInstance.isDisposed()) {
+    chartInstance.dispose()
+  }
+})
 
 function updateChart() {
   if (!chartInstance) return
@@ -437,6 +454,12 @@ function updateChart() {
     yAxis: {
       type: 'value',
       name: '最终金额(元)',
+      // ✅ 强制显示 Y 轴
+      axisLine: {
+        show: true,
+        lineStyle: { color: '#666' }
+      },
+      axisTick: { show: true },
       axisLabel: {
         formatter: '{value}'
       }
