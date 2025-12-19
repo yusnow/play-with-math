@@ -283,11 +283,11 @@
               <h3>🎯 e 的小数位记忆</h3>
               <el-tag>记忆力</el-tag>
             </div>
-            <p class="game-desc">记住 e 的前 20 位小数</p>
+            <p class="game-desc">记住 e 的小数位（已准备 100 位）</p>
             <div class="game-content">
               <div class="e-digits-display">
                 <span class="digit-label">e = 2.</span>
-                <span v-for="(digit, index) in eDigitsArray.slice(0, 20)" :key="index" class="e-digit">
+                <span v-for="(digit, index) in eDigitsArray.slice(0, Math.max(20, revealedDigits))" :key="index" class="e-digit">
                   {{ showDigits || index < revealedDigits ? digit : '?' }}
                 </span>
               </div>
@@ -878,7 +878,7 @@ const showDigits = ref(false)
 const revealedDigits = ref(5)
 
 const revealMoreDigits = () => {
-  revealedDigits.value = Math.min(revealedDigits.value + 5, 20)
+  revealedDigits.value = Math.min(revealedDigits.value + 10, eDigitsArray.length)
 }
 
 // 公式配对
