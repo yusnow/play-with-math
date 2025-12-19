@@ -418,7 +418,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { Back, MagicStick, Histogram, Compass, Share, Star, Refresh, ArrowLeft, ArrowRight, HomeFilled } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import katex from 'katex'
