@@ -354,7 +354,8 @@ function animate() {
 
 // e位数动画
 function animateEDigits() {
-  const fullDigits = '2.718281828459045235360287471352662497757247093699959574966967627724...'
+  // ✅ 限制显示长度,避免超出页面
+  const fullDigits = '2.71828182845904523536...'
   let currentIndex = 1
   
   const interval = setInterval(() => {
@@ -364,7 +365,7 @@ function animateEDigits() {
     } else {
       clearInterval(interval)
     }
-  }, 100)
+  }, 80)  // ✅ 加快动画速度
 }
 </script>
 
@@ -623,6 +624,11 @@ function animateEDigits() {
         font-weight: bold;
         margin-bottom: 0.5rem;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        // ✅ 防止 e 的数值超出页面
+        word-break: break-all;
+        overflow-wrap: break-word;
+        max-width: 100%;
+        line-height: 1.2;
       }
       
       .stat-label {
@@ -797,15 +803,32 @@ function animateEDigits() {
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
       
-      .stat-card {
-        padding: 1.5rem 1rem;
+      .stat-item {
+        padding: 1rem 0.5rem;
         
-        .stat-number {
-          font-size: 2rem;
+        .stat-value {
+          font-size: 1.8rem !important;  // ✅ 移动端缩小字号
+          line-height: 1.3;
+          max-width: 100%;
+          word-break: break-all;
         }
         
         .stat-label {
           font-size: 0.85rem;
+        }
+      }
+    }
+  }
+}
+
+// ✅ 超小屏幕特殊优化
+@media (max-width: 375px) {
+  .stats-section {
+    .stats-grid {
+      .stat-item {
+        .stat-value {
+          font-size: 1.5rem !important;
+          padding: 0 0.25rem;
         }
       }
     }

@@ -720,6 +720,7 @@ watch(taylorTerms, () => {
 </script>
 
 <style scoped lang="scss">
+@use 'sass:color';
 @use '@/styles/variables.scss' as *;
 
 .chapter2 {
@@ -814,7 +815,7 @@ watch(taylorTerms, () => {
         
         &.active {
           border-color: $color-secondary;
-          background: lighten($color-secondary, 45%);
+          background: color.adjust($color-secondary, $lightness: 45%);
         }
         
         &.highlight {
@@ -883,7 +884,7 @@ watch(taylorTerms, () => {
     .proof-box {
       margin-top: 1.5rem;
       padding: 1rem;
-      background: lighten($color-accent, 40%);
+      background: color.adjust($color-accent, $lightness: 40%);
       border-left: 4px solid $color-accent;
       border-radius: 8px;
       
@@ -1177,7 +1178,7 @@ watch(taylorTerms, () => {
 .formula-display {
   text-align: center;
   padding: 2rem;
-  background: lighten($color-primary, 45%);
+  background: color.adjust($color-primary, $lightness: 45%);
   border-radius: 15px;
   margin: 1.5rem 0;
   
@@ -1230,7 +1231,7 @@ watch(taylorTerms, () => {
   .detail-formula {
     text-align: center;
     padding: 2rem;
-    background: lighten($color-primary, 45%);
+    background: color.adjust($color-primary, $lightness: 45%);
     border-radius: 12px;
     margin-bottom: 2rem;
     font-size: 1.3rem;
@@ -1260,7 +1261,7 @@ watch(taylorTerms, () => {
       li {
         padding: 0.75rem;
         margin: 0.5rem 0;
-        background: lighten($color-secondary, 40%);
+        background: color.adjust($color-secondary, $lightness: 40%);
         border-left: 4px solid $color-secondary;
         border-radius: 4px;
         line-height: 1.6;
