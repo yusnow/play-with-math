@@ -500,6 +500,7 @@ function updateTaylorChart() {
       data: Array.from({length: taylorTerms.value}, (_, i) => `n=${i}`)
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'value'
     },
     series: [
@@ -610,6 +611,7 @@ function updateDerivativeChart() {
       data: xData
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'value'
     },
     series: series

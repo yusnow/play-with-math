@@ -634,6 +634,7 @@ const updateGrowthChart = () => {
       nameGap: 30
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'value',
       name: scenarioNames[growthScenario.value]
     },
@@ -728,6 +729,7 @@ const updateNormalChart = () => {
       }
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'value',
       name: 'f(x)'
     },
@@ -841,6 +843,7 @@ const updatePhysicsChart = () => {
       }
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'value',
       name: yAxisName
     },
@@ -938,6 +941,7 @@ const updateFinanceChart = () => {
       name: '年份'
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'value',
       name: '金额 (¥)',
       axisLabel: {
@@ -1041,6 +1045,7 @@ const updateSignalChart = () => {
       }
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'value',
       name: '幅度'
     },

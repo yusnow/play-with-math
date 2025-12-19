@@ -452,6 +452,7 @@ function updateChart() {
       }
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'value',
       name: '最终金额(元)',
       // ✅ 强制显示 Y 轴

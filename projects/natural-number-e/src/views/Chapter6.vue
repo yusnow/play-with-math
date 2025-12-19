@@ -599,6 +599,7 @@ const updateFunctionPlot = () => {
       axisLabel: { interval: Math.floor(xData.length / 10) }
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'value',
       name: 'f(x)'
     },
@@ -804,6 +805,7 @@ const updateLimitChart = () => {
       name: 'n'
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'value',
       name: '(1+1/n)ⁿ',
       min: 2.5,

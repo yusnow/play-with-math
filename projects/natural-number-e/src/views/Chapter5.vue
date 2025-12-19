@@ -492,6 +492,7 @@ const updateEulerVisualization = () => {
       axisLine: { lineStyle: { color: '#666' } }
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'value',
       name: '虚部',
       min: -1.5,
@@ -584,6 +585,7 @@ const updateFibonacciChart = () => {
       name: 'n'
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'log',
       name: '值（对数坐标）'
     },

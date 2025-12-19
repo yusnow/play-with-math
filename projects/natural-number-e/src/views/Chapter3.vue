@@ -694,6 +694,7 @@ const initErrorChart = () => {
       axisLabel: { fontSize: 12 }
     },
     yAxis: {
+      axisLine: { show: true, lineStyle: { color: '#333' } },
       type: 'log',
       name: '绝对误差（对数）',
       nameLocation: 'middle',
