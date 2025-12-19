@@ -1503,16 +1503,25 @@ onUnmounted(() => {
   font-family: 'Courier New', monospace;
   text-align: center;
   margin-bottom: 20px;
-  line-height: 1.8;
+  line-height: 2;
+  padding: 20px;
+  background: rgba(102, 126, 234, 0.05);
+  border-radius: 8px;
+  max-width: 100%;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow-wrap: break-word;
   
   .digit-label {
     color: #333;
     font-weight: 700;
+    display: inline;
   }
   
   .e-digit {
     color: #667eea;
     margin: 0 2px;
+    display: inline;
   }
 }
 
