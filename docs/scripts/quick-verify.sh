@@ -4,11 +4,20 @@
 echo "🎯 开始 Phase 1 快速验证..."
 echo ""
 
-PROJECT_DIR="/Users/yugh/Dev/play-with-math/projects/natural-number-e"
+# 自动检测项目目录
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+PROJECT_DIR="$REPO_ROOT/projects/natural-number-e"
+
+echo "📂 检测到的路径:"
+echo "   仓库根目录: $REPO_ROOT"
+echo "   项目目录: $PROJECT_DIR"
+echo ""
 
 # 检查项目目录
 if [ ! -d "$PROJECT_DIR" ]; then
     echo "❌ 错误: 项目目录不存在: $PROJECT_DIR"
+    echo "   请确保在 play-with-math 仓库内运行此脚本"
     exit 1
 fi
 
