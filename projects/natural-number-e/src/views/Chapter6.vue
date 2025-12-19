@@ -486,7 +486,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { Back, TrendCharts, Picture, Operation, Trophy, Medal, VideoPlay, Refresh, ArrowLeft, CircleCheck } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import katex from 'katex'
