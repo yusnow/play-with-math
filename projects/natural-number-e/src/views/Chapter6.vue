@@ -493,6 +493,7 @@ import katex from 'katex'
 import 'katex/dist/katex.min.css'
 import MascotCat from '@/components/common/MascotCat.vue'
 import Chapter6Lab from './Chapter6Lab.vue'
+import { initChart, setupChartResize } from '@/utils/echartsHelper'
 
 // 吉祥物消息
 const mascotMessage = ref('欢迎来到探索实验室！动手实践，深度理解 e 的每一个细节！🔬')
@@ -630,10 +631,12 @@ const updateFunctionPlot = () => {
   functionChartInstance.setOption(option)
 }
 
-const initFunctionChart = () => {
+const initFunctionChart = async () => {
   if (!functionChart.value) return
-  functionChartInstance = echarts.init(functionChart.value)
-  updateFunctionPlot()
+  functionChartInstance = await initChart(functionChart.value)
+  if (functionChartInstance) {
+    updateFunctionPlot()
+  }
 }
 
 // ========== 2. e的艺术 ==========
@@ -842,10 +845,12 @@ const updateLimitChart = () => {
   limitChartInstance.setOption(option)
 }
 
-const initLimitChart = () => {
+const initLimitChart = async () => {
   if (!limitChart.value) return
-  limitChartInstance = echarts.init(limitChart.value)
-  calculateLimit()
+  limitChartInstance = await initChart(limitChart.value)
+  if (limitChartInstance) {
+    calculateLimit()
+  }
 }
 
 // 数值积分
